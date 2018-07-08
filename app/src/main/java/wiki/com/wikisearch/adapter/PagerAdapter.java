@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,16 +20,20 @@ import com.bumptech.glide.Glide;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import wiki.com.wikisearch.R;
 import wiki.com.wikisearch.activity.WbViewActivity;
 import wiki.com.wikisearch.model.PageList;
+import wiki.com.wikisearch.model.WikiPageDeserializer;
 import wiki.com.wikisearch.utils.Utilities;
 
-public class PagerAdapter extends RecyclerView.Adapter<PagerAdapter.PageViewHolder> {
+public class PagerAdapter extends RecyclerView.Adapter<PagerAdapter.PageViewHolder>implements Filterable {
 
-    private PageList mPageList;
+    private PageList mPageList,unFilteredList;
+    private List<WikiPageDeserializer> mFilteredPageList;
     private int rowLayout;
     private Context context;
     private Set<String> keys;
@@ -35,9 +41,52 @@ public class PagerAdapter extends RecyclerView.Adapter<PagerAdapter.PageViewHold
 
     public PagerAdapter(PageList pageList, int rowLayout, Context context, Set<String> keys) {
         this.mPageList = pageList;
+        this.mFilteredPageList = pageList.pages;
+        this.unFilteredList=pageList;
         this.rowLayout = rowLayout;
         this.context = context;
         this.keys=keys;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+
+                if (charString.isEmpty()) {
+
+                    mFilteredPageList = mPageList.pages;
+                }else {
+                    ArrayList<WikiPageDeserializer> filteredList = new ArrayList<>();
+
+                    for (WikiPageDeserializer search : mPageList.pages) {
+
+                        if ( search.getTitle().toLowerCase().contains(charString) ) {
+
+                            filteredList.add(search);
+                        }
+                    }
+
+                    mFilteredPageList = filteredList;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mFilteredPageList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                if(charSequence.toString().isEmpty()){
+                    mPageList = unFilteredList;
+                }
+                else {
+                    mFilteredPageList = (List<WikiPageDeserializer>) filterResults.values;
+                }
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public static class PageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

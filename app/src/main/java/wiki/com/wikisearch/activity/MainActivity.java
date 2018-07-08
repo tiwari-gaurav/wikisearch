@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView ;
     private String searchQuery;
+    private PagerAdapter mAdapter;
+    boolean success = false;
 
 
 
@@ -72,12 +74,19 @@ public class MainActivity extends AppCompatActivity {
                 searchView.setQuery("", false);
                 searchView.setIconified(true);
                 searchItem.collapseActionView();
+                if(success) {
+                    mAdapter.getFilter().filter(query);
+                    return true;
+                }
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
+                if(success) {
+                    mAdapter.getFilter().filter(newText);
+                    return true;
+                }
 
                 return true;
             }
@@ -87,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void fetchPages(String query) {
+    private void fetchPages(final String query) {
         APiInterface apiService = ApiClient.getClient().create(APiInterface.class);
         Call<JsonElement> call = apiService.getPages("query","json","pageimages|pageterms","prefixsearch","thumbnail",
                 "description",query);
@@ -103,9 +112,12 @@ public class MainActivity extends AppCompatActivity {
                 builder.registerTypeAdapter(PageList.class, new PageDeserializer());
                 Gson gson = builder.setFieldNamingPolicy(LOWER_CASE_WITH_UNDERSCORES).create();
                 PageList list = gson.fromJson(posts.toString(), PageList.class);
-                mRecyclerView.setAdapter(new PagerAdapter(list, R.layout.news_list_item, MainActivity.this,keys));
+                mAdapter = new PagerAdapter(list, R.layout.news_list_item, MainActivity.this,keys);
+                mRecyclerView.setAdapter(mAdapter );
                 MainActivity.this.mRecyclerView.addItemDecoration(new DividerItemDecoration(MainActivity.this,DividerItemDecoration.VERTICAL));
-                Log.e("length",list.pages.get(0)+"");  ;
+                Log.e("length",list.pages.get(0)+"");
+                success=true;
+
 
 
 
