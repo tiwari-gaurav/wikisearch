@@ -1,4 +1,4 @@
-package wiki.com.wikisearch;
+package wiki.com.wikisearch.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import wiki.com.wikisearch.R;
 
 /**
  * Created by gaurav on 12/9/17.

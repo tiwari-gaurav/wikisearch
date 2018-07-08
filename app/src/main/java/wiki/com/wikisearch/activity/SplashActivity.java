@@ -1,4 +1,4 @@
-package wiki.com.wikisearch;
+package wiki.com.wikisearch.activity;
 
 import android.content.Intent;
 
@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 
 
+import wiki.com.wikisearch.R;
 import wiki.com.wikisearch.utils.TypeWriter;
 
 

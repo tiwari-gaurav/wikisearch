@@ -1,4 +1,4 @@
-package wiki.com.wikisearch;
+package wiki.com.wikisearch.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -19,31 +19,21 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import wiki.com.wikisearch.R;
 import wiki.com.wikisearch.adapter.PagerAdapter;
 import wiki.com.wikisearch.contentProvider.MySuggestionProvider;
-import wiki.com.wikisearch.model.Page;
 import wiki.com.wikisearch.model.PageDeserializer;
 import wiki.com.wikisearch.model.PageList;
-import wiki.com.wikisearch.model.Query;
-import wiki.com.wikisearch.model.Terms;
 import wiki.com.wikisearch.network.APiInterface;
 import wiki.com.wikisearch.network.ApiClient;
 
 import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
-import static wiki.com.wikisearch.contentProvider.MySuggestionProvider.*;
 
 public class MainActivity extends AppCompatActivity {
 

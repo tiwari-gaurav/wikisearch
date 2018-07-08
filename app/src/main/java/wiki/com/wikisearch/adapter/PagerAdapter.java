@@ -1,14 +1,11 @@
 package wiki.com.wikisearch.adapter;
 
-import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +18,10 @@ import com.bumptech.glide.Glide;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.Set;
 
 import wiki.com.wikisearch.R;
-import wiki.com.wikisearch.WbViewActivity;
+import wiki.com.wikisearch.activity.WbViewActivity;
 import wiki.com.wikisearch.model.PageList;
 import wiki.com.wikisearch.utils.Utilities;
 

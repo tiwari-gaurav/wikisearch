@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity"
+        <activity android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -32,7 +32,7 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <activity android:name=".WbViewActivity"/>
+        <activity android:name=".activity.WbViewActivity"/>
         <provider
             android:authorities="wiki.com.wikisearch.contentProvider.MySuggestionProvider"
 
