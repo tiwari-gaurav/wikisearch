@@ -38,6 +38,7 @@ public class PagerAdapter extends RecyclerView.Adapter<PagerAdapter.PageViewHold
     private Context context;
     private Set<String> keys;
     URL url,domain;
+    boolean isFilterActive = false;
 
     public PagerAdapter(PageList pageList, int rowLayout, Context context, Set<String> keys) {
         this.mPageList = pageList;
@@ -58,6 +59,7 @@ public class PagerAdapter extends RecyclerView.Adapter<PagerAdapter.PageViewHold
                 if (charString.isEmpty()) {
 
                     mFilteredPageList = mPageList.pages;
+                    isFilterActive = false;
                 }else {
                     ArrayList<WikiPageDeserializer> filteredList = new ArrayList<>();
 
@@ -84,7 +86,9 @@ public class PagerAdapter extends RecyclerView.Adapter<PagerAdapter.PageViewHold
                 else {
                     mFilteredPageList = (List<WikiPageDeserializer>) filterResults.values;
                 }
+                isFilterActive = true;
                 notifyDataSetChanged();
+
             }
         };
     }
@@ -123,22 +127,40 @@ public class PagerAdapter extends RecyclerView.Adapter<PagerAdapter.PageViewHold
 
     @Override
     public void onBindViewHolder(@NonNull PagerAdapter.PageViewHolder holder, int position) {
-        if(mPageList.pages.get(position).getTerms()!=null && mPageList.pages.get(position).getTitle()!=null ) {
-            holder.description.setText(mPageList.pages.get(position).getTerms().getDescription().get(0));
-            holder.title.setText(mPageList.pages.get(position).getTitle());
+        String item;
+        if (isFilterActive) {
+            if(mFilteredPageList.get(position).getTerms()!=null && mFilteredPageList.get(position).getTitle()!=null ) {
+                holder.description.setText(mFilteredPageList.get(position).getTerms().getDescription().get(0));
+                holder.title.setText(mFilteredPageList.get(position).getTitle());
 
+            }
+            if( mFilteredPageList.get(position).getThumbnail()!=null){
+                Glide.with(context).load(mFilteredPageList.get(position).getThumbnail().get("source").getAsString()).placeholder(R.drawable.profile_icon).into(holder.searchImage);
+            }
+        } else {
+            if(mPageList.pages.get(position).getTerms()!=null && mPageList.pages.get(position).getTitle()!=null ) {
+                holder.description.setText(mPageList.pages.get(position).getTerms().getDescription().get(0));
+                holder.title.setText(mPageList.pages.get(position).getTitle());
+
+            }
+            if( mPageList.pages.get(position).getThumbnail()!=null){
+                Glide.with(context).load(mPageList.pages.get(position).getThumbnail().get("source").getAsString()).placeholder(R.drawable.profile_icon).into(holder.searchImage);
+            }
         }
-        if( mPageList.pages.get(position).getThumbnail()!=null){
-            Glide.with(context).load(mPageList.pages.get(position).getThumbnail().get("source").getAsString()).placeholder(R.drawable.profile_icon).into(holder.searchImage);
-        }
+
 
         applyClickEvents(holder, position);
 
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {if(isFilterActive) {
+        return mFilteredPageList.size();
+    } else {
         return mPageList.pages.size();
+    }
+
     }
 
 
